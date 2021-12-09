@@ -2,6 +2,8 @@
 // our Durable Object namespace, we must export it from the root module.
 export { FlickrGroupAddrUser } from './FlickrGroupAddrUser'
 
+import { Router } from "itty-router"
+
 export default {
     async fetch(request: Request, env: Env) {
         try {
@@ -23,7 +25,19 @@ async function handleRequest(request: Request, env: Env) {
     return new Response(`${count} ${wasOdd}`)
     */
 
-    return new Response( "FGA API saying 'zup" )
+    const router = Router()
+
+    router.get( '^/api/auth/app/callback', (req) => {
+        const params        = req.params
+        const queryString   = req.query
+
+        return new Response( "Got an OAuth callback with code: " + JSON.stringify(queryString) )
+    })
+
+    router.all( '*', () => new Response( 'Invalid request', { status: 404 } ) )
+
+
+    return router.handle( request )
 }
 
 interface Env {
