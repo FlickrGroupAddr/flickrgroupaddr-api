@@ -3,6 +3,7 @@
 export { FlickrGroupAddrUser } from './FlickrGroupAddrUser'
 
 import { Router } from "itty-router"
+import { handleAppLoginOAuthCallback } from './app_login' 
 
 export default {
     async fetch(request: Request, env: Env) {
@@ -31,7 +32,10 @@ async function handleRequest(request: Request, env: Env) {
         const params        = req.params
         const queryString   = req.query
 
-        return new Response( "Got an OAuth callback with code: " + JSON.stringify(queryString) )
+        //return new Response( "Got an OAuth callback with code: " + JSON.stringify(queryString) )
+        if ( queryString ) {
+            return handleAppLoginOAuthCallback( queryString['code'] )
+        }
     })
 
     router.all( '*', () => new Response( 'Invalid request', { status: 404 } ) )
