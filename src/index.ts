@@ -15,7 +15,7 @@ export default {
     },
 }
 
-async function handleRequest(request: Request, env: Env) {
+async function handleRequest(request: Request, env: Env):Promise<Response> {
     /*
     let id = env.COUNTER.idFromName('A')
     let obj = env.COUNTER.get(id)
@@ -34,7 +34,7 @@ async function handleRequest(request: Request, env: Env) {
 
         //return new Response( "Got an OAuth callback with code: " + JSON.stringify(queryString) )
         if ( queryString ) {
-            return handleAppLoginOAuthCallback( queryString['code'] )
+            return handleAppLoginOAuthCallback( queryString['code'], request, env )
         }
     })
 
